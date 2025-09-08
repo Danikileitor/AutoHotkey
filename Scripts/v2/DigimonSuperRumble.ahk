@@ -7,7 +7,7 @@ lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
 
 tTabs.UseTab('KeyBinds')
-hkFG := interfaz.AddHotkey('vFG', 'FG')
+hkFG := interfaz.AddHotkey('vFG')
 hkFG.Value := 'F5'
 
 tTabs.UseTab()
