@@ -2,9 +2,9 @@
 
 F4:: ExitApp()
 
-interfaz := Gui(, '[DNK]{AHK}{DSR}')
-lTitle := interfaz.AddText('Center w300 vTitle', '[DNK]{AHK}{DSR}')
-btnSalir := interfaz.AddButton('Default w80 vSalir', 'Salir').OnEvent('Click', Salir)
+interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
+lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
+btnSalir := interfaz.AddButton('Default Center x210 w80 vSalir', 'Salir').OnEvent('Click', Salir)
 
 Salir(*)
 {
