@@ -8,6 +8,7 @@ tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
 
 tTabs.UseTab('KeyBinds')
 hkFG := interfaz.AddHotkey('vFG', 'F5')
+hkF := interfaz.AddHotkey('vF', 'F6')
 
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
