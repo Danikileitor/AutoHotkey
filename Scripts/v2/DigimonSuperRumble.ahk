@@ -23,3 +23,61 @@ F9::
 {
     interfaz.Show('w300')
 }
+
+SetKeyDelay(100)
+ventana := "ahk_exe Client-Win64-Shipping.exe"
+farmeo := 0
+
+F5:: {
+    global farmeo
+    if !farmeo {
+        farmeo := 1
+        SetTimer(FG, 100)
+    } else {
+        Reload()
+    }
+}
+
+F6:: {
+    global farmeo
+    if !farmeo {
+        farmeo := 1
+        SetTimer(FFF, 100)
+    } else {
+        Reload()
+    }
+}
+
+XButton2:: {
+    if WinExist(ventana) {
+        ControlSend("{w down}", , ventana)
+    } else {
+        ExitApp()
+    }
+    Send("{XButton2}")
+}
+
+XButton1:: {
+    if WinExist(ventana) {
+        ControlSend("{w up}", , ventana)
+    } else {
+        ExitApp()
+    }
+    Send("{XButton1}")
+}
+
+FG() {
+    if WinExist(ventana) {
+        ControlSend("fggg", , ventana)
+    } else {
+        ExitApp()
+    }
+}
+
+FFF() {
+    if WinExist(ventana) {
+        ControlSend("f", , ventana)
+    } else {
+        ExitApp()
+    }
+}
