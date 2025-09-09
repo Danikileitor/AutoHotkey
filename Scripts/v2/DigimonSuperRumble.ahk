@@ -7,8 +7,12 @@ lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
 
 tTabs.UseTab('KeyBinds')
-hkFG := interfaz.AddHotkey('vFG', 'F5')
-hkF := interfaz.AddHotkey('vF', 'F6')
+hkFG := interfaz.AddHotkey('vFG Section', 'F5')
+chkFG := interfaz.AddCheckbox('vcFG Disabled ys', 'Active')
+hkFFF := interfaz.AddHotkey('vFFF xs Section', 'F6')
+chkFFF := interfaz.AddCheckbox('vcFFF Disabled ys', 'Active')
+
+tTabs.UseTab('Options')
 
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
@@ -19,9 +23,16 @@ Salir(*)
     ExitApp()
 }
 
+SetKeyDelay(100)
+ventana := "ahk_exe Client-Win64-Shipping.exe"
+farmeo := false
+
 StopTimers() {
     SetTimer(FG, 0)
     SetTimer(FFF, 0)
+    global farmeo := false
+    chkFG.Value := false
+    chkFFF.Value := false
 }
 
 F9::
@@ -33,14 +44,11 @@ F9::
     }
 }
 
-SetKeyDelay(100)
-ventana := "ahk_exe Client-Win64-Shipping.exe"
-farmeo := 0
-
 F5:: {
     global farmeo
     if !farmeo {
-        farmeo := 1
+        farmeo := true
+        chkFG.Value := true
         SetTimer(FG, 100)
     } else {
         StopTimers()
@@ -50,7 +58,8 @@ F5:: {
 F6:: {
     global farmeo
     if !farmeo {
-        farmeo := 1
+        farmeo := true
+        chkFFF.Value := true
         SetTimer(FFF, 100)
     } else {
         StopTimers()
