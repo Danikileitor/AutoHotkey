@@ -7,10 +7,11 @@ lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
 
 tTabs.UseTab('KeyBinds')
-hkFG := interfaz.AddHotkey('vFG Section', 'F5')
-chkFG := interfaz.AddCheckbox('vcFG Disabled ys', 'Active')
-hkFFF := interfaz.AddHotkey('vFFF xs Section', 'F6')
-chkFFF := interfaz.AddCheckbox('vcFFF Disabled ys', 'Active')
+hkF4 := interfaz.AddHotkey('Section vF4', 'F4')
+hkFG := interfaz.AddHotkey('xs Section vFG', 'F5')
+chkFG := interfaz.AddCheckbox('Disabled ys+5 vcFG', 'Active')
+hkFFF := interfaz.AddHotkey('xs Section vFFF', 'F6')
+chkFFF := interfaz.AddCheckbox('Disabled ys+5 vcFFF', 'Active')
 
 tTabs.UseTab('Options')
 
