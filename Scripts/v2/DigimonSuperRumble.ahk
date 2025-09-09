@@ -19,9 +19,18 @@ Salir(*)
     ExitApp()
 }
 
+StopTimers() {
+    SetTimer(FG, 0)
+    SetTimer(FFF, 0)
+}
+
 F9::
 {
-    interfaz.Show('w300')
+    if (!WinActive(interfaz.Hwnd)) {
+        interfaz.Show('w300')
+    } else {
+        interfaz.Hide()
+    }
 }
 
 SetKeyDelay(100)
@@ -34,7 +43,7 @@ F5:: {
         farmeo := 1
         SetTimer(FG, 100)
     } else {
-        Reload()
+        StopTimers()
     }
 }
 
@@ -44,15 +53,13 @@ F6:: {
         farmeo := 1
         SetTimer(FFF, 100)
     } else {
-        Reload()
+        StopTimers()
     }
 }
 
 XButton2:: {
     if WinExist(ventana) {
         ControlSend("{w down}", , ventana)
-    } else {
-        ExitApp()
     }
     Send("{XButton2}")
 }
@@ -60,8 +67,6 @@ XButton2:: {
 XButton1:: {
     if WinExist(ventana) {
         ControlSend("{w up}", , ventana)
-    } else {
-        ExitApp()
     }
     Send("{XButton1}")
 }
@@ -70,7 +75,7 @@ FG() {
     if WinExist(ventana) {
         ControlSend("fggg", , ventana)
     } else {
-        ExitApp()
+        StopTimers()
     }
 }
 
@@ -78,6 +83,6 @@ FFF() {
     if WinExist(ventana) {
         ControlSend("f", , ventana)
     } else {
-        ExitApp()
+        StopTimers()
     }
 }
