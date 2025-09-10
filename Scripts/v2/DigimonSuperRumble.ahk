@@ -11,10 +11,10 @@ hkF4 := interfaz.AddHotkey('Disabled w20 Section vF4', 'F4')
 tF4 := interfaz.AddText('ys+5 vtF4', 'Cerrar el programa')
 hkFG := interfaz.AddHotkey('Disabled w20 xs Section vFG', 'F5')
 chkFG := interfaz.AddCheckbox('Disabled ys+5 vcFG')
-tFG := interfaz.AddText('ys+5 vtFG', 'Farmeo: Se pulsan las teclas FGGG cada 100ms')
+tFG := interfaz.AddText('ys+5 vtFG', 'Farmeo: FGGG cada 100ms')
 hkFFF := interfaz.AddHotkey('Disabled w20 xs Section vFFF', 'F6')
 chkFFF := interfaz.AddCheckbox('Disabled ys+5 vcFFF')
-tFFF := interfaz.AddText('ys+5 vtFFF', 'Skip: Se pulsa la tecla F cada 100ms')
+tFFF := interfaz.AddText('ys+5 vtFFF', 'Skip: F cada 100ms')
 
 tTabs.UseTab('Options')
 
