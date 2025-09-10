@@ -77,6 +77,12 @@ XButton2:: {
     Send("{XButton2}")
 }
 
+F10:: {
+    Send("{LWin down}{Space}{LWin up}")
+    ControlSend("{vkC0}", , WinExist("A"))
+    Send("{LWin down}{Space}{LWin up}")
+}
+
 FG() {
     if WinExist(ventana) {
         ControlSend("fggg", , ventana)
