@@ -72,15 +72,12 @@ F6:: {
 
 XButton2:: {
     if WinExist(ventana) {
-        ControlSend("{Raw}``", , ventana)
+        ;ControlSend("{Raw}``", , ventana)
+        Send("{LWin down}{Space}{LWin up}")
+        ControlSend("{vkC0}", , WinExist("A"))
+        Send("{LWin down}{Space}{LWin up}")
     }
     Send("{XButton2}")
-}
-
-F10:: {
-    Send("{LWin down}{Space}{LWin up}")
-    ControlSend("{vkC0}", , WinExist("A"))
-    Send("{LWin down}{Space}{LWin up}")
 }
 
 FG() {
