@@ -17,20 +17,22 @@ farmeo := false
 
 interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
 lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
+sb := interfaz.AddStatusBar('vSB', 'Digimon Super Rumble')
 tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
 
 tTabs.UseTab('KeyBinds')
-hkF4 := interfaz.AddHotkey('Disabled w20 Section vF4', 'F4')
+hkF4 := interfaz.AddHotkey('Disabled w22 Section vF4', 'F4')
 tF4 := interfaz.AddText('ys+5 vtF4', 'Cerrar el programa')
-hkFG := interfaz.AddHotkey('Disabled w20 xs Section vFG', 'F5')
+hkFG := interfaz.AddHotkey('Disabled w22 xs Section vFG', 'F5')
 chkFG := interfaz.AddCheckbox('ys+5 vcFG', ' Farmeo: FGGG cada 100ms')
 chkFG.OnEvent('Click', OnClick)
-hkFFF := interfaz.AddHotkey('Disabled w20 xs Section vFFF', 'F6')
+hkFFF := interfaz.AddHotkey('Disabled w22 xs Section vFFF', 'F6')
 chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada 100ms')
 chkFFF.OnEvent('Click', OnClick)
-hkF9 := interfaz.AddHotkey('Disabled w20 xs Section vF9', 'F9')
+hkF9 := interfaz.AddHotkey('Disabled w22 xs Section vF9', 'F9')
 tF9 := interfaz.AddText('ys+5 vtF9', 'Abrir/Cerrar esta ventana')
-
+eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 w22 xs Section vM5', 'M5')
+tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
 
 tTabs.UseTab('Options')
 
