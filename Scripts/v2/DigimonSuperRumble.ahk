@@ -1,6 +1,16 @@
 ﻿#Requires AutoHotkey v2.0
 ;InstallKeybdHook
 
+;#################
+;### Variables ###
+;#################
+
+SetKeyDelay(100)
+;La ventana del Digimon Super Rumble.
+ventana := "ahk_exe Client-Win64-Shipping.exe"
+;Boolean que indica si hay un timer activo.
+farmeo := false
+
 ;################
 ;### Interfaz ###
 ;################
@@ -34,12 +44,6 @@ Salir(*)
 {
     ExitApp()
 }
-
-SetKeyDelay(100)
-;La ventana del Digimon Super Rumble.
-ventana := "ahk_exe Client-Win64-Shipping.exe"
-;Boolean que indica si hay un timer activo.
-farmeo := false
 
 /**
  * Detiene todos los timers y cambia la variable `farmeo` a `false`.
