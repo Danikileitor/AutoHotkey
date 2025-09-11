@@ -1,6 +1,9 @@
 ﻿#Requires AutoHotkey v2.0
+;InstallKeybdHook
 
-F4:: ExitApp()
+;################
+;### Interfaz ###
+;################
 
 interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
 lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
@@ -22,6 +25,10 @@ tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
 btnSalir.OnEvent('Click', Salir)
 
+;#################
+;### Funciones ###
+;#################
+
 Salir(*)
 {
     ExitApp()
@@ -39,14 +46,27 @@ StopTimers() {
     chkFFF.Value := false
 }
 
-F9::
-{
-    if (!WinActive(interfaz.Hwnd)) {
-        interfaz.Show('w300')
+FG() {
+    if WinExist(ventana) {
+        ControlSend("fggg", , ventana)
     } else {
-        interfaz.Hide()
+        StopTimers()
     }
 }
+
+FFF() {
+    if WinExist(ventana) {
+        ControlSend("f", , ventana)
+    } else {
+        StopTimers()
+    }
+}
+
+;###############
+;### Hotkeys ###
+;###############
+
+F4:: ExitApp()
 
 F5:: {
     global farmeo
@@ -70,6 +90,15 @@ F6:: {
     }
 }
 
+F9::
+{
+    if (!WinActive(interfaz.Hwnd)) {
+        interfaz.Show('w300')
+    } else {
+        interfaz.Hide()
+    }
+}
+
 XButton2:: {
     if WinExist(ventana) {
         Send("{LWin down}{Space}{LWin up}")
@@ -79,20 +108,4 @@ XButton2:: {
         Send("{LWin down}{Space}{LWin up}")
     }
     Send("{XButton2}")
-}
-
-FG() {
-    if WinExist(ventana) {
-        ControlSend("fggg", , ventana)
-    } else {
-        StopTimers()
-    }
-}
-
-FFF() {
-    if WinExist(ventana) {
-        ControlSend("f", , ventana)
-    } else {
-        StopTimers()
-    }
 }
