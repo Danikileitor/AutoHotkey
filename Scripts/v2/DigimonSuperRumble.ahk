@@ -29,15 +29,23 @@ btnSalir.OnEvent('Click', Salir)
 ;### Funciones ###
 ;#################
 
+/**
+ * Cierra la aplicación.
+ */
 Salir(*)
 {
     ExitApp()
 }
 
 SetKeyDelay(100)
+;La ventana del Digimon Super Rumble.
 ventana := "ahk_exe Client-Win64-Shipping.exe"
+;Boolean que indica si hay un timer activo.
 farmeo := false
 
+/**
+ * Detiene todos los timers y cambia la variable `farmeo` a `false`.
+ */
 StopTimers() {
     SetTimer(FG, 0)
     SetTimer(FFF, 0)
@@ -46,6 +54,10 @@ StopTimers() {
     chkFFF.Value := false
 }
 
+/**
+ * Si existe la `ventana` del Digimon Super Rumble le envía las teclas `fggg` cada `100ms`.
+ * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
+ */
 FG() {
     if WinExist(ventana) {
         ControlSend("fggg", , ventana)
@@ -54,6 +66,10 @@ FG() {
     }
 }
 
+/**
+ * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `f` cada `100ms`.
+ * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
+ */
 FFF() {
     if WinExist(ventana) {
         ControlSend("f", , ventana)
