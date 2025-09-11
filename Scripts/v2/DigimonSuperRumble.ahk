@@ -13,11 +13,9 @@ tTabs.UseTab('KeyBinds')
 hkF4 := interfaz.AddHotkey('Disabled w20 Section vF4', 'F4')
 tF4 := interfaz.AddText('ys+5 vtF4', 'Cerrar el programa')
 hkFG := interfaz.AddHotkey('Disabled w20 xs Section vFG', 'F5')
-chkFG := interfaz.AddCheckbox('Disabled ys+5 vcFG')
-tFG := interfaz.AddText('ys+5 vtFG', 'Farmeo: FGGG cada 100ms')
+chkFG := interfaz.AddCheckbox('ys+5 vcFG', ' Farmeo: FGGG cada 100ms')
 hkFFF := interfaz.AddHotkey('Disabled w20 xs Section vFFF', 'F6')
-chkFFF := interfaz.AddCheckbox('Disabled ys+5 vcFFF')
-tFFF := interfaz.AddText('ys+5 vtFFF', 'Skip: F cada 100ms')
+chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada 100ms')
 
 tTabs.UseTab('Options')
 
@@ -57,24 +55,48 @@ StopTimers() {
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía las teclas `fggg` cada `100ms`.
  * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
+ * @param timer Si se especifica un parámetro `timer` se cambia la variable `farmeo` a `true`, se marca `chkFG` y se lanza el timer `FG`
  */
-FG() {
-    if WinExist(ventana) {
-        ControlSend("fggg", , ventana)
+FG(timer?) {
+    if (IsSet(timer)) {
+        global farmeo
+        if !farmeo {
+            farmeo := true
+            chkFG.Value := true
+            SetTimer(FG, 100)
+        } else {
+            StopTimers()
+        }
     } else {
-        StopTimers()
+        if WinExist(ventana) {
+            ControlSend("fggg", , ventana)
+        } else {
+            StopTimers()
+        }
     }
 }
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `f` cada `100ms`.
  * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
+ * @param timer Si se especifica un parámetro `timer` se cambia la variable `farmeo` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
  */
-FFF() {
-    if WinExist(ventana) {
-        ControlSend("f", , ventana)
+FFF(timer?) {
+    if (IsSet(timer)) {
+        global farmeo
+        if !farmeo {
+            farmeo := true
+            chkFFF.Value := true
+            SetTimer(FFF, 100)
+        } else {
+            StopTimers()
+        }
     } else {
-        StopTimers()
+        if WinExist(ventana) {
+            ControlSend("f", , ventana)
+        } else {
+            StopTimers()
+        }
     }
 }
 
@@ -85,25 +107,11 @@ FFF() {
 F4:: ExitApp()
 
 F5:: {
-    global farmeo
-    if !farmeo {
-        farmeo := true
-        chkFG.Value := true
-        SetTimer(FG, 100)
-    } else {
-        StopTimers()
-    }
+    FG(true)
 }
 
 F6:: {
-    global farmeo
-    if !farmeo {
-        farmeo := true
-        chkFFF.Value := true
-        SetTimer(FFF, 100)
-    } else {
-        StopTimers()
-    }
+    FFF(true)
 }
 
 F9::
