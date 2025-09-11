@@ -27,6 +27,9 @@ chkFG := interfaz.AddCheckbox('ys+5 vcFG', ' Farmeo: FGGG cada 100ms')
 hkFFF := interfaz.AddHotkey('Disabled w20 xs Section vFFF', 'F6')
 chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada 100ms')
 
+chkFG.OnEvent('Click', OnClick)
+chkFFF.OnEvent('Click', OnClick)
+
 tTabs.UseTab('Options')
 
 tTabs.UseTab()
@@ -40,8 +43,7 @@ btnSalir.OnEvent('Click', Salir)
 /**
  * Cierra la aplicación.
  */
-Salir(*)
-{
+Salir(*) {
     ExitApp()
 }
 
@@ -54,6 +56,19 @@ StopTimers() {
     global farmeo := false
     chkFG.Value := false
     chkFFF.Value := false
+}
+
+/**
+ * Función para controlar cuando se marca un checkbox.
+ * @param chk El checkbox que ha sido marcado.
+ */
+OnClick(chk, *) {
+    if chk.Value {
+        switch chk.Name {
+            case 'cFG': FG(true)
+            case 'cFFF': FFF(true)
+        }
+    }
 }
 
 /**
@@ -118,8 +133,7 @@ F6:: {
     FFF(true)
 }
 
-F9::
-{
+F9:: {
     if (!WinActive(interfaz.Hwnd)) {
         interfaz.Show('w300')
     } else {
