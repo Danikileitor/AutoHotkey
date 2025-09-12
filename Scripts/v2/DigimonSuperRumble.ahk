@@ -211,7 +211,7 @@ Beber(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend('1', , ventana)
+            ControlSend('2', , ventana)
         } else {
             StopTimers()
         }
