@@ -9,7 +9,7 @@ SetKeyDelay(100)
 ;La ventana del Digimon Super Rumble.
 ventana := "ahk_exe Client-Win64-Shipping.exe"
 ;Boolean que indica si hay un timer activo.
-farmeo := false
+timer := false
 
 ;################
 ;### Interfaz ###
@@ -29,6 +29,12 @@ chkFG.OnEvent('Click', OnClick)
 hkFFF := interfaz.AddHotkey('Disabled w22 xs Section vFFF', 'F6')
 chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada 100ms')
 chkFFF.OnEvent('Click', OnClick)
+hkComer := interfaz.AddHotkey('Disabled w22 xs Section vComer', 'F7')
+chkComer := interfaz.AddCheckbox('ys+5 vcComer', ' Comer: 1 cada 100ms')
+chkComer.OnEvent('Click', OnClick)
+hkBeber := interfaz.AddHotkey('Disabled w22 xs Section vBeber', 'F8')
+chkBeber := interfaz.AddCheckbox('ys+5 vcBeber', ' Beber: 1 cada 100ms')
+chkBeber.OnEvent('Click', OnClick)
 hkF9 := interfaz.AddHotkey('Disabled w22 xs Section vF9', 'F9')
 tF9 := interfaz.AddText('ys+5 vtF9', 'Abrir/Cerrar esta ventana')
 eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 w22 xs Section vM5', 'M5')
@@ -52,14 +58,28 @@ Salir(*) {
 }
 
 /**
- * Detiene todos los timers y cambia la variable `farmeo` a `false`.
+ * Muestra o cierra la ventana de la aplicación
+ * @param {Integer} width El ancho de la ventana
+ */
+Mostrar(width := 300) {
+    if (!WinActive(interfaz.Hwnd)) {
+        interfaz.Show('w' . width)
+    } else {
+        interfaz.Hide()
+    }
+}
+
+/**
+ * Detiene todos los timers y cambia la variable `timer` a `false`.
  */
 StopTimers() {
     SetTimer(FG, 0)
     SetTimer(FFF, 0)
-    global farmeo := false
+    global timer := false
     chkFG.Value := false
     chkFFF.Value := false
+    chkComer.Value := false
+    chkBeber.Value := false
 }
 
 /**
@@ -71,20 +91,22 @@ OnClick(chk, *) {
         switch chk.Name {
             case 'cFG': FG(true)
             case 'cFFF': FFF(true)
+            case 'cComer': Comer(true)
+            case 'cBeber': Beber(true)
         }
     }
 }
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía las teclas `fggg` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
- * @param timer Si se especifica un parámetro `timer` se cambia la variable `farmeo` a `true`, se marca `chkFG` y se lanza el timer `FG`
+ * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFG` y se lanza el timer `FG`
  */
-FG(timer?) {
-    if (IsSet(timer)) {
-        global farmeo
-        if !farmeo {
-            farmeo := true
+FG(start?) {
+    if (IsSet(start)) {
+        global timer
+        if !timer {
+            timer := true
             chkFG.Value := true
             SetTimer(FG, 100)
         } else {
@@ -101,14 +123,14 @@ FG(timer?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `f` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `farmeo` a `false`.
- * @param timer Si se especifica un parámetro `timer` se cambia la variable `farmeo` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
+ * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
  */
-FFF(timer?) {
-    if (IsSet(timer)) {
-        global farmeo
-        if !farmeo {
-            farmeo := true
+FFF(start?) {
+    if (IsSet(start)) {
+        global timer
+        if !timer {
+            timer := true
             chkFFF.Value := true
             SetTimer(FFF, 100)
         } else {
@@ -123,27 +145,64 @@ FFF(timer?) {
     }
 }
 
+/**
+ * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `1` cada `100ms`.
+ * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkComer` y se lanza el timer `Comer`
+ */
+Comer(start?) {
+    if (IsSet(start)) {
+        global timer
+        if !timer {
+            timer := true
+            chkComer.Value := true
+            SetTimer(Comer, 100)
+        } else {
+            StopTimers()
+        }
+    } else {
+        if WinExist(ventana) {
+            ControlSend("1", , ventana)
+        } else {
+            StopTimers()
+        }
+    }
+}
+
+/**
+ * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `2` cada `100ms`.
+ * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
+ */
+Beber(start?) {
+    if (IsSet(start)) {
+        global timer
+        if !timer {
+            timer := true
+            chkBeber.Value := true
+            SetTimer(Beber, 100)
+        } else {
+            StopTimers()
+        }
+    } else {
+        if WinExist(ventana) {
+            ControlSend("2", , ventana)
+        } else {
+            StopTimers()
+        }
+    }
+}
+
 ;###############
 ;### Hotkeys ###
 ;###############
 
 F4:: ExitApp()
-
-F5:: {
-    FG(true)
-}
-
-F6:: {
-    FFF(true)
-}
-
-F9:: {
-    if (!WinActive(interfaz.Hwnd)) {
-        interfaz.Show('w300')
-    } else {
-        interfaz.Hide()
-    }
-}
+F5:: FG(true)
+F6:: FFF(true)
+F7:: Comer(true)
+F8:: Beber(true)
+F9:: Mostrar()
 
 XButton2:: {
     if WinExist(ventana) {
