@@ -62,7 +62,7 @@ Salir(*) {
  * @param {Integer} width El ancho de la ventana
  */
 Mostrar(width := 300) {
-    if (!WinActive(interfaz.Hwnd)) {
+    if !WinActive(interfaz.Hwnd) {
         interfaz.Show('w' . width)
     } else {
         interfaz.Hide()
@@ -103,7 +103,7 @@ OnClick(chk, *) {
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFG` y se lanza el timer `FG`
  */
 FG(start?) {
-    if (IsSet(start)) {
+    if IsSet(start) {
         global timer
         if !timer {
             timer := true
@@ -127,7 +127,7 @@ FG(start?) {
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
  */
 FFF(start?) {
-    if (IsSet(start)) {
+    if IsSet(start) {
         global timer
         if !timer {
             timer := true
@@ -151,7 +151,7 @@ FFF(start?) {
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkComer` y se lanza el timer `Comer`
  */
 Comer(start?) {
-    if (IsSet(start)) {
+    if IsSet(start) {
         global timer
         if !timer {
             timer := true
@@ -175,7 +175,7 @@ Comer(start?) {
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
  */
 Beber(start?) {
-    if (IsSet(start)) {
+    if IsSet(start) {
         global timer
         if !timer {
             timer := true
@@ -193,6 +193,25 @@ Beber(start?) {
     }
 }
 
+/**
+ * Cambia al teclado coreano, pulsa la tecla ` del autorun y vuelce a cambiar de teclado.
+ * @param {String} key Si se especifica, se envía la tecla después de la función.
+ * 
+ * (Requiere tener solamente 2 teclados instalados y que el segundo sea el coreano)
+ */
+Autorun(key?) {
+    if WinExist(ventana) {
+        Send("{LWin down}{Space}{LWin up}")
+        Sleep(50)
+        ControlSend("{vkC0}", , WinExist("A"))
+        Sleep(50)
+        Send("{LWin down}{Space}{LWin up}")
+    }
+    if IsSet(key) {
+        Send('{' . key . '}')
+    }
+}
+
 ;###############
 ;### Hotkeys ###
 ;###############
@@ -203,14 +222,4 @@ F6:: FFF(true)
 F7:: Comer(true)
 F8:: Beber(true)
 F9:: Mostrar()
-
-XButton2:: {
-    if WinExist(ventana) {
-        Send("{LWin down}{Space}{LWin up}")
-        Sleep(50)
-        ControlSend("{vkC0}", , WinExist("A"))
-        Sleep(50)
-        Send("{LWin down}{Space}{LWin up}")
-    }
-    Send("{XButton2}")
-}
+XButton2:: Autorun('XButton2')
