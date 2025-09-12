@@ -7,7 +7,7 @@
 
 SetKeyDelay(100)
 ;La ventana del Digimon Super Rumble.
-ventana := "ahk_exe Client-Win64-Shipping.exe"
+ventana := 'ahk_exe Client-Win64-Shipping.exe'
 ;Boolean que indica si hay un timer activo.
 timer := false
 
@@ -75,6 +75,8 @@ Mostrar(width := 300) {
 StopTimers() {
     SetTimer(FG, 0)
     SetTimer(FFF, 0)
+    SetTimer(Comer, 0)
+    SetTimer(Beber, 0)
     global timer := false
     chkFG.Value := false
     chkFFF.Value := false
@@ -114,7 +116,7 @@ FG(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend("fggg", , ventana)
+            ControlSend('fggg', , ventana)
         } else {
             StopTimers()
         }
@@ -138,7 +140,7 @@ FFF(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend("f", , ventana)
+            ControlSend('f', , ventana)
         } else {
             StopTimers()
         }
@@ -162,7 +164,7 @@ Comer(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend("1", , ventana)
+            ControlSend('1', , ventana)
         } else {
             StopTimers()
         }
@@ -186,7 +188,7 @@ Beber(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend("2", , ventana)
+            ControlSend('2', , ventana)
         } else {
             StopTimers()
         }
@@ -201,11 +203,11 @@ Beber(start?) {
  */
 Autorun(key?) {
     if WinExist(ventana) {
-        Send("{LWin down}{Space}{LWin up}")
+        Send('{LWin down}{Space}{LWin up}')
         Sleep(50)
-        ControlSend("{vkC0}", , WinExist("A"))
+        ControlSend('{vkC0}', , WinExist('A'))
         Sleep(50)
-        Send("{LWin down}{Space}{LWin up}")
+        Send('{LWin down}{Space}{LWin up}')
     }
     if IsSet(key) {
         Send('{' . key . '}')
