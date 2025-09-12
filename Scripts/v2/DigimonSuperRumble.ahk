@@ -6,10 +6,14 @@
 ;#################
 
 SetKeyDelay(100)
-;La ventana del Digimon Super Rumble.
+/** La ventana del `Digimon Super Rumble`.*/
 ventana := 'ahk_exe Client-Win64-Shipping.exe'
-;Boolean que indica si hay un timer activo.
+/** Boolean que indica si hay un timer activo.*/
 timer := false
+/** Boolean que indica si el timer `Comer` está activo.*/
+comiendo := false
+/** Boolean que indica si el timer `Beber` está activo.*/
+bebiendo := false
 
 ;################
 ;### Interfaz ###
@@ -78,6 +82,8 @@ StopTimers() {
     SetTimer(Comer, 0)
     SetTimer(Beber, 0)
     global timer := false
+    global comiendo := false
+    global bebiendo := false
     chkFG.Value := false
     chkFFF.Value := false
     chkComer.Value := false
@@ -149,18 +155,27 @@ FFF(start?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `1` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkComer` y se lanza el timer `Comer`
+ * En caso contraro detiene el timer `Comer` y cambia la variable `comiendo` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `comiendo` a `true`, se marca `chkComer` y se lanza el timer `Comer`
+ * 
+ * En caso de estar `bebiendo`, se para de `Beber`.
  */
 Comer(start?) {
     if IsSet(start) {
-        global timer
-        if !timer {
-            timer := true
+        global comiendo, bebiendo
+        if !comiendo {
+            if bebiendo {
+                SetTimer(Beber, 0)
+                bebiendo := false
+                chkBeber.Value := false
+            }
+            comiendo := true
             chkComer.Value := true
             SetTimer(Comer, 100)
         } else {
-            StopTimers()
+            SetTimer(Comer, 0)
+            comiendo := false
+            chkComer.Value := false
         }
     } else {
         if WinExist(ventana) {
@@ -173,22 +188,31 @@ Comer(start?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `2` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
+ * En caso contraro detiene el timer `Beber` y cambia la variable `bebiendo` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `bebiendo` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
+ * 
+ * En caso de estar `comiendo`, se para de `Comer`.
  */
 Beber(start?) {
     if IsSet(start) {
-        global timer
-        if !timer {
-            timer := true
+        global bebiendo, comiendo
+        if !bebiendo {
+            if comiendo {
+                SetTimer(Comer, 0)
+                comiendo := false
+                chkComer.Value := false
+            }
+            bebiendo := true
             chkBeber.Value := true
             SetTimer(Beber, 100)
         } else {
-            StopTimers()
+            SetTimer(Beber, 0)
+            bebiendo := false
+            chkBeber.Value := false
         }
     } else {
         if WinExist(ventana) {
-            ControlSend('2', , ventana)
+            ControlSend('1', , ventana)
         } else {
             StopTimers()
         }
