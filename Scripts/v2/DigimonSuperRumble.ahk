@@ -225,7 +225,7 @@ Beber(start?) {
  * (Requiere tener solamente 2 teclados instalados y que el segundo sea el coreano)
  */
 Autorun(key?) {
-    if WinExist(ventana) {
+    if WinActive(ventana) {
         Send('{LWin down}{Space}{LWin up}')
         Sleep(50)
         ControlSend('{vkC0}', , WinExist('A'))
