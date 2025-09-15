@@ -110,7 +110,7 @@ OnClick(chk, *) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía las teclas `fggg` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * En caso contrario detiene todos los timers y cambia la variable `timer` a `false`.
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFG` y se lanza el timer `FG`
  */
 FG(start?) {
@@ -134,7 +134,7 @@ FG(start?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `f` cada `100ms`.
- * En caso contraro detiene todos los timers y cambia la variable `timer` a `false`.
+ * En caso contrario detiene todos los timers y cambia la variable `timer` a `false`.
  * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
  */
 FFF(start?) {
@@ -158,7 +158,7 @@ FFF(start?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `1` cada `100ms`.
- * En caso contraro detiene el timer `Comer` y cambia la variable `comiendo` a `false`.
+ * En caso contrario detiene el timer `Comer` y cambia la variable `comiendo` a `false`.
  * @param start Si se especifica un parámetro `start` se cambia la variable `comiendo` a `true`, se marca `chkComer` y se lanza el timer `Comer`
  * 
  * En caso de estar `bebiendo`, se para de `Beber`.
@@ -191,7 +191,7 @@ Comer(start?) {
 
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `2` cada `100ms`.
- * En caso contraro detiene el timer `Beber` y cambia la variable `bebiendo` a `false`.
+ * En caso contrario detiene el timer `Beber` y cambia la variable `bebiendo` a `false`.
  * @param start Si se especifica un parámetro `start` se cambia la variable `bebiendo` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
  * 
  * En caso de estar `comiendo`, se para de `Comer`.
