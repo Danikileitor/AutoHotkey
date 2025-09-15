@@ -232,6 +232,7 @@ Beber(start?) {
  */
 Autorun(key?) {
     if WinActive(ventana) {
+        StopTimers()
         Send('{LWin down}{Space}{LWin up}')
         Sleep(50)
         ControlSend('{vkC0}', , WinExist('A'))
