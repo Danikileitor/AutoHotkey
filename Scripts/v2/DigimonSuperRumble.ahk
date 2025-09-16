@@ -288,13 +288,11 @@ Beber(start?) {
  */
 Autorun(key?) {
     if WinActive(ventana) {
-        StopTimers()
-        Send('#{Space}')
+        DetectHiddenWindows(true)
+        PostMessage(0x0050, 0, 0x4120C0A, , ventana)
         Sleep(50)
         Send('{vkC0}')
-        Sleep(50)
-        Send('#{Space}')
-        Sleep(50)
+        PostMessage(0x0050, 0, 0x40A0C0A, , ventana)
     }
     if IsSet(key) {
         Send('{' . key . '}')
