@@ -123,6 +123,18 @@ UpDownChange(u, *) {
 }
 
 /**
+ * Actualiza la barra de estado con el nombre de la ventana activa.
+ */
+UpdateStatusBar(*) {
+    Sleep(50)
+    if WinActive('A') {
+        sb.SetText(WinGetTitle('A'))
+    } else {
+        sb.SetText(WinGetTitle(''))
+    }
+}
+
+/**
  * Muestra o cierra la ventana de la aplicación.
  * @param {Integer} width El ancho de la ventana.
  */
@@ -282,18 +294,14 @@ Beber(start?) {
 
 /**
  * Envía la tecla `º` del teclado español como si fuese `´` del teclado coreano.
- * @param {String} key Si se especifica, se envía la tecla después de la función.
  */
-Autorun(key?) {
+Autorun(*) {
     if WinActive(ventana) {
         DetectHiddenWindows(true)
         PostMessage(0x0050, 0, 0x4120C0A, , ventana)
         Sleep(50)
         Send('{vkC0}')
         PostMessage(0x0050, 0, 0x40A0C0A, , ventana)
-    }
-    if IsSet(key) {
-        Send('{' . key . '}')
     }
 }
 
@@ -307,4 +315,5 @@ F6:: FFF(true)
 F7:: Comer(true)
 F8:: Beber(true)
 F9:: Mostrar()
-XButton2:: Autorun('XButton2')
+~LButton:: UpdateStatusBar()
+~XButton2:: Autorun()
