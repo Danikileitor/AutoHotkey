@@ -130,7 +130,7 @@ UpdateStatusBar(*) {
     if WinActive('A') {
         sb.SetText(WinGetTitle('A'))
     } else {
-        sb.SetText(WinGetTitle(''))
+        sb.SetText('')
     }
 }
 
@@ -300,7 +300,7 @@ Autorun(*) {
         DetectHiddenWindows(true)
         PostMessage(0x0050, 0, 0x4120C0A, , ventana)
         Sleep(50)
-        Send('{vkC0}')
+        ControlSend('{vkC0}', , ventana)
         PostMessage(0x0050, 0, 0x40A0C0A, , ventana)
     }
 }
