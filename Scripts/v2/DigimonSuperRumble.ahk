@@ -21,7 +21,7 @@ bebiendo := false
 interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
 lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 sb := interfaz.AddStatusBar('vSB', 'Digimon Super Rumble')
-tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Options'])
+tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Opciones'])
 
 tTabs.UseTab('KeyBinds')
 hkF4 := interfaz.AddHotkey('Disabled w22 Section vF4', 'F4')
@@ -49,7 +49,14 @@ tF9 := interfaz.AddText('ys+5 vtF9', 'Abrir/Cerrar esta ventana')
 eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM5', 'M5')
 tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
 
-tTabs.UseTab('Options')
+tTabs.UseTab('Opciones')
+tKeyDelay := interfaz.AddText('Section vtKeyDelay', 'Key Delay')
+sdKeyDelay := interfaz.AddSlider('ys ToolTip Range50-1000 TickInterval50 Line50 Buddy1tKeyDelay Buddy2eKeyDelay vKeyDelay', 100)
+eKeyDelay := interfaz.AddEdit('ys w50 Number Limit4 veKeyDelay')
+uKeyDelay := interfaz.AddUpDown('ys Range50-1000 0x80 vuKeyDelay', 100)
+uKeyDelay.edit := eKeyDelay
+uKeyDelay.slider := sdKeyDelay
+uKeyDelay.OnEvent('Change', UpDownChange)
 
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
@@ -64,6 +71,28 @@ btnSalir.OnEvent('Click', Salir)
  */
 Salir(*) {
     ExitApp()
+}
+
+/**
+ * Cambia el intervalo de un control UpDown
+ * @param u El control UpDown que ha cambiado
+ */
+UpDownChange(u, *) {
+    static step := 50
+    static e := u.edit
+    static sd := u.slider
+    if u.Value <= 50 {
+        e.Value := 50
+    } else if u.Value >= 1000 {
+        e.Value := 1000
+    } else {
+        if u.Value < sd.Value {
+            e.Value := e.Value - step + 1
+        } else {
+            e.Value := e.Value + step - 1
+        }
+    }
+    sd.Value := u.Value
 }
 
 /**
