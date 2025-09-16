@@ -97,7 +97,7 @@ ControlChangeKeyDelay(c, *) {
  * @param sd El control `Slider` que ha cambiado.
  */
 SliderChange(sd, *) {
-    sd.Value := Round(sd.Value / 50) * 50
+    sd.Value := Round(sd.Value / sd.interval) * sd.interval
     sd.UpDown.Value := sd.Value
 }
 
