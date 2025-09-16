@@ -281,7 +281,7 @@ Beber(start?) {
 }
 
 /**
- * Envía la tecla º del teclado español como si fuese ´ del teclado coreano.
+ * Envía la tecla `º` del teclado español como si fuese `´` del teclado coreano.
  * @param {String} key Si se especifica, se envía la tecla después de la función.
  */
 Autorun(key?) {
