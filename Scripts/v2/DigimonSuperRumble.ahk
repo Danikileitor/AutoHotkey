@@ -4,7 +4,6 @@
 ;### Variables ###
 ;#################
 
-SetKeyDelay(100)
 /** La ventana del `Digimon Super Rumble`.*/
 ventana := 'ahk_exe Client-Win64-Shipping.exe'
 /** Boolean que indica si hay un timer activo.*/
@@ -59,12 +58,13 @@ uKeyDelay := interfaz.AddUpDown('ys Range50-1000 0x80 vuKeyDelay', 100)
 uKeyDelay.edit := eKeyDelay
 uKeyDelay.slider := sdKeyDelay
 sdKeyDelay.UpDown := uKeyDelay
-sdKeyDelay.OnEvent('Change', SliderChange)
-uKeyDelay.OnEvent('Change', UpDownChange)
-
+sdKeyDelay.OnEvent('Change', ControlChangeKeyDelay)
+uKeyDelay.OnEvent('Change', ControlChangeKeyDelay)
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
 btnSalir.OnEvent('Click', Salir)
+
+SetKeyDelay(sdKeyDelay.Value)
 
 ;#################
 ;### Funciones ###
@@ -77,15 +77,33 @@ Salir(*) {
     ExitApp()
 }
 
-SliderChange(sd, *) {
-    sd.Value := Round(sd.Value / 50) * 50
-    sd.UpDown.Value := sd.Value
-    SetKeyDelay(sd.Value)
+/**
+ * Dependiendo del tipo de control que ha cambiado, lanza su respectiva función `OnChange` y posteriormente cambia el `KeyDelay` de los `Send`.
+ * @param c En control que ha cambiado.
+ */
+ControlChangeKeyDelay(c, *) {
+    if RegExMatch(c.ClassNN, "_([^\d_]+)", &match) {
+        control := match[1]
+    }
+    switch control {
+        case 'trackbar': SliderChange(c)
+        case 'updown': UpDownChange(c)
+        default: SetKeyDelay(sdKeyDelay.Value)
+    }
 }
 
 /**
- * Cambia el intervalo de un control UpDown
- * @param u El control UpDown que ha cambiado
+ * Cambia el intervalo de un control `Slider`.
+ * @param sd El control `Slider` que ha cambiado.
+ */
+SliderChange(sd, *) {
+    sd.Value := Round(sd.Value / 50) * 50
+    sd.UpDown.Value := sd.Value
+}
+
+/**
+ * Cambia el intervalo de un control `UpDown`.
+ * @param u El control `UpDown` que ha cambiado.
  */
 UpDownChange(u, *) {
     static e := u.edit
@@ -102,12 +120,11 @@ UpDownChange(u, *) {
         }
     }
     sd.Value := u.Value
-    SetKeyDelay(sd.Value)
 }
 
 /**
- * Muestra o cierra la ventana de la aplicación
- * @param {Integer} width El ancho de la ventana
+ * Muestra o cierra la ventana de la aplicación.
+ * @param {Integer} width El ancho de la ventana.
  */
 Mostrar(width := 300) {
     if !WinActive(interfaz.Hwnd) {
@@ -152,7 +169,7 @@ OnClick(chk, *) {
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía las teclas `fggg` cada `100ms`.
  * En caso contrario detiene todos los timers y cambia la variable `timer` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFG` y se lanza el timer `FG`
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFG` y se lanza el timer `FG`.
  */
 FG(start?) {
     if IsSet(start) {
@@ -176,7 +193,7 @@ FG(start?) {
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `f` cada `100ms`.
  * En caso contrario detiene todos los timers y cambia la variable `timer` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFFF` y se lanza el timer `FFF`
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, se marca `chkFFF` y se lanza el timer `FFF`.
  */
 FFF(start?) {
     if IsSet(start) {
@@ -200,7 +217,7 @@ FFF(start?) {
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `1` cada `100ms`.
  * En caso contrario detiene el timer `Comer` y cambia la variable `comiendo` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `comiendo` a `true`, se marca `chkComer` y se lanza el timer `Comer`
+ * @param start Si se especifica un parámetro `start` se cambia la variable `comiendo` a `true`, se marca `chkComer` y se lanza el timer `Comer`.
  * 
  * En caso de estar `bebiendo`, se para de `Beber`.
  */
@@ -233,7 +250,7 @@ Comer(start?) {
 /**
  * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `2` cada `100ms`.
  * En caso contrario detiene el timer `Beber` y cambia la variable `bebiendo` a `false`.
- * @param start Si se especifica un parámetro `start` se cambia la variable `bebiendo` a `true`, se marca `chkBeber` y se lanza el timer `Beber`
+ * @param start Si se especifica un parámetro `start` se cambia la variable `bebiendo` a `true`, se marca `chkBeber` y se lanza el timer `Beber`.
  * 
  * En caso de estar `comiendo`, se para de `Comer`.
  */
@@ -272,11 +289,11 @@ Beber(start?) {
 Autorun(key?) {
     if WinActive(ventana) {
         StopTimers()
-        Send('{LWin down}{Space}{LWin up}')
+        Send('#{Space}')
         Sleep(50)
         Send('{vkC0}')
         Sleep(50)
-        Send('{LWin down}{Space}{LWin up}')
+        Send('#{Space}')
         Sleep(50)
     }
     if IsSet(key) {
