@@ -281,7 +281,7 @@ Beber(start?) {
 }
 
 /**
- * Cambia al teclado coreano, pulsa la tecla ` del autorun y vuelce a cambiar de teclado.
+ * Envía la tecla º del teclado español como si fuese ´ del teclado coreano.
  * @param {String} key Si se especifica, se envía la tecla después de la función.
  */
 Autorun(key?) {
