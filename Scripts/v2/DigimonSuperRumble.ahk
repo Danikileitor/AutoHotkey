@@ -51,11 +51,15 @@ tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
 
 tTabs.UseTab('Opciones')
 tKeyDelay := interfaz.AddText('Section vtKeyDelay', 'Key Delay')
-sdKeyDelay := interfaz.AddSlider('ys ToolTip Range50-1000 TickInterval50 Line50 Buddy1tKeyDelay Buddy2eKeyDelay vKeyDelay', 100)
+sdKeyDelay := interfaz.AddSlider('ys ToolTip Range50-1000 TickInterval50 Line50 Page50 Buddy1tKeyDelay Buddy2eKeyDelay vKeyDelay', 100)
+sdKeyDelay.range := { min: 50, max: 1000 }
+sdKeyDelay.interval := 50
 eKeyDelay := interfaz.AddEdit('ys w50 Number Limit4 veKeyDelay')
 uKeyDelay := interfaz.AddUpDown('ys Range50-1000 0x80 vuKeyDelay', 100)
 uKeyDelay.edit := eKeyDelay
 uKeyDelay.slider := sdKeyDelay
+sdKeyDelay.UpDown := uKeyDelay
+sdKeyDelay.OnEvent('Change', SliderChange)
 uKeyDelay.OnEvent('Change', UpDownChange)
 
 tTabs.UseTab()
@@ -73,26 +77,32 @@ Salir(*) {
     ExitApp()
 }
 
+SliderChange(sd, *) {
+    sd.Value := Round(sd.Value / 50) * 50
+    sd.UpDown.Value := sd.Value
+    SetKeyDelay(sd.Value)
+}
+
 /**
  * Cambia el intervalo de un control UpDown
  * @param u El control UpDown que ha cambiado
  */
 UpDownChange(u, *) {
-    static step := 50
     static e := u.edit
     static sd := u.slider
-    if u.Value <= 50 {
-        e.Value := 50
-    } else if u.Value >= 1000 {
-        e.Value := 1000
+    if u.Value <= sd.range.min {
+        e.Value := sd.range.min
+    } else if u.Value >= sd.range.max {
+        e.Value := sd.range.max
     } else {
         if u.Value < sd.Value {
-            e.Value := e.Value - step + 1
+            e.Value := e.Value - sd.interval + 1
         } else {
-            e.Value := e.Value + step - 1
+            e.Value := e.Value + sd.interval - 1
         }
     }
     sd.Value := u.Value
+    SetKeyDelay(sd.Value)
 }
 
 /**
@@ -150,7 +160,7 @@ FG(start?) {
         if !timer {
             timer := true
             chkFG.Value := true
-            SetTimer(FG, 100)
+            SetTimer(FG, sdKeyDelay.Value)
         } else {
             StopTimers()
         }
@@ -174,7 +184,7 @@ FFF(start?) {
         if !timer {
             timer := true
             chkFFF.Value := true
-            SetTimer(FFF, 100)
+            SetTimer(FFF, sdKeyDelay.Value)
         } else {
             StopTimers()
         }
@@ -205,7 +215,7 @@ Comer(start?) {
             }
             comiendo := true
             chkComer.Value := true
-            SetTimer(Comer, 100)
+            SetTimer(Comer, sdKeyDelay.Value)
         } else {
             SetTimer(Comer, 0)
             comiendo := false
@@ -238,7 +248,7 @@ Beber(start?) {
             }
             bebiendo := true
             chkBeber.Value := true
-            SetTimer(Beber, 100)
+            SetTimer(Beber, sdKeyDelay.Value)
         } else {
             SetTimer(Beber, 0)
             bebiendo := false
