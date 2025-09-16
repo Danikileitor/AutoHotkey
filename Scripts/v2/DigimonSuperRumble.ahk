@@ -184,7 +184,7 @@ Comer(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend('1', , ventana)
+            ControlSend(cbComer.Text, , ventana)
         } else {
             StopTimers()
         }
@@ -217,7 +217,7 @@ Beber(start?) {
         }
     } else {
         if WinExist(ventana) {
-            ControlSend('2', , ventana)
+            ControlSend(cbBeber.Text, , ventana)
         } else {
             StopTimers()
         }
