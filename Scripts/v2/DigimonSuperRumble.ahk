@@ -283,8 +283,6 @@ Beber(start?) {
 /**
  * Cambia al teclado coreano, pulsa la tecla ` del autorun y vuelce a cambiar de teclado.
  * @param {String} key Si se especifica, se envía la tecla después de la función.
- * 
- * (Requiere tener solamente 2 teclados instalados y que el segundo sea el coreano)
  */
 Autorun(key?) {
     if WinActive(ventana) {
