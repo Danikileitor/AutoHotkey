@@ -234,9 +234,10 @@ Autorun(key?) {
     if WinActive(ventana) {
         Send('{LWin down}{Space}{LWin up}')
         Sleep(50)
-        ControlSend('{vkC0}', , WinExist('A'))
+        Send('{vkC0}')
         Sleep(50)
         Send('{LWin down}{Space}{LWin up}')
+        Sleep(50)
     }
     if IsSet(key) {
         Send('{' . key . '}')
