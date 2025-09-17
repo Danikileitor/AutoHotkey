@@ -209,6 +209,7 @@ StopTimers() {
     SetTimer(FFF, 0)
     SetTimer(Comer, 0)
     SetTimer(Beber, 0)
+    SetTimer(Space, 0)
     global timer := false
     global comiendo := false
     global bebiendo := false
