@@ -60,6 +60,9 @@ uKeyDelay.slider := sdKeyDelay
 sdKeyDelay.UpDown := uKeyDelay
 sdKeyDelay.OnEvent('Change', ControlChangeKeyDelay)
 uKeyDelay.OnEvent('Change', ControlChangeKeyDelay)
+chkTop := interfaz.AddCheckbox('xs Section vcTop', 'Siempre visible')
+chkTop.OnEvent('Click', Top)
+
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
 btnSalir.OnEvent('Click', Salir)
@@ -75,6 +78,21 @@ SetKeyDelay(sdKeyDelay.Value)
  */
 Salir(*) {
     ExitApp()
+}
+
+/**
+ * Función para controlar cuando se marca un checkbox.
+ * @param chk El checkbox que ha sido marcado.
+ */
+OnClick(chk, *) {
+    if chk.Value {
+        switch chk.Name {
+            case 'cFG': FG(true)
+            case 'cFFF': FFF(true)
+            case 'cComer': Comer(true)
+            case 'cBeber': Beber(true)
+        }
+    }
 }
 
 /**
@@ -146,6 +164,13 @@ Mostrar(width := 300) {
     }
 }
 
+Top(c, *) {
+    switch c.Value {
+        case 1: c.Gui.Opt("+AlwaysOnTop +ToolWindow")
+        case 0: c.Gui.Opt("-AlwaysOnTop -ToolWindow")
+    }
+}
+
 /**
  * Detiene todos los timers y cambia la variable `timer` a `false`.
  */
@@ -161,21 +186,6 @@ StopTimers() {
     chkFFF.Value := false
     chkComer.Value := false
     chkBeber.Value := false
-}
-
-/**
- * Función para controlar cuando se marca un checkbox.
- * @param chk El checkbox que ha sido marcado.
- */
-OnClick(chk, *) {
-    if chk.Value {
-        switch chk.Name {
-            case 'cFG': FG(true)
-            case 'cFFF': FFF(true)
-            case 'cComer': Comer(true)
-            case 'cBeber': Beber(true)
-        }
-    }
 }
 
 /**
