@@ -104,10 +104,20 @@ ControlChangeKeyDelay(c, *) {
         control := match[1]
     }
     switch control {
-        case 'trackbar': SliderChange(c)
-        case 'updown': UpDownChange(c)
-        default: SetKeyDelay(sdKeyDelay.Value)
+        case 'trackbar': SliderChange(c) UpdateKeyDelay()
+        case 'updown': UpDownChange(c) UpdateKeyDelay()
     }
+}
+
+/**
+ * Actualiza el texto de cada control que incluya `KeyDelay`.
+ */
+UpdateKeyDelay(*) {
+    SetKeyDelay(sdKeyDelay.Value)
+    chkFG.Text := ' Farmeo: FGGG cada ' . sdKeyDelay.Value . 'ms'
+    chkFFF.Text := ' Skip: F cada ' . sdKeyDelay.Value . 'ms'
+    tComer.Text := 'cada ' . sdKeyDelay.Value . 'ms'
+    tBeber.Text := 'cada ' . sdKeyDelay.Value . 'ms'
 }
 
 /**
