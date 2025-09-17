@@ -20,7 +20,8 @@ bebiendo := false
 interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
 lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 sb := interfaz.AddStatusBar('vSB', 'Digimon Super Rumble')
-tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Opciones'])
+sb.SetParts(220)
+tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Opciones', 'Ayuda'])
 
 tTabs.UseTab('Opciones')
 tKeyDelay := interfaz.AddText('Section vtKeyDelay', 'Key Delay')
@@ -62,6 +63,14 @@ hkF9 := interfaz.AddHotkey('Disabled xs w22 Section vF9', 'F9')
 tF9 := interfaz.AddText('ys+5 vtF9', 'Abrir/Cerrar esta ventana')
 eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM5', 'M5')
 tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
+
+tTabs.UseTab('Ayuda')
+lWikiKO := interfaz.AddLink('vWikiKO', 'Wiki coreana: <a href="#">DSRWIKI</a>')
+lWikiEN := interfaz.AddLink('vWikiEN', 'Wiki inglesa: <a href="#">DSRWIKI</a>')
+lWikiOP := interfaz.AddLink('vWikiOP', 'Wiki currada: <a href="#">DSRWIKI</a>')
+lGuilmonFans := interfaz.AddLink('vGuilmonFans', 'Web con varias guías: <a href="#">GuilmonFans</a>')
+lExcelKO := interfaz.AddLink('vExcelKO', 'Excel coreano: <a href="#">Excel</a>')
+lDSR := interfaz.AddLink('vDSR', 'Web oficial: <a href="#">DSR</a>')
 
 tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
@@ -163,14 +172,24 @@ UpdateStatusBar(*) {
 }
 
 /**
+ * Actualiza el reloj de la barra de estado.
+ */
+UpdateClock(*) {
+    time := FormatTime(A_Now, 'hh:mm:ss tt')
+    sb.SetText(time, 2)
+}
+
+/**
  * Muestra o cierra la ventana de la aplicación.
  * @param {Integer} width El ancho de la ventana.
  */
 Mostrar(width := 300) {
     if !WinActive(interfaz.Hwnd) {
         interfaz.Show('w' . width)
+        SetTimer(UpdateClock, 1000)
     } else {
         interfaz.Hide()
+        SetTimer(UpdateClock, 0)
     }
 }
 
