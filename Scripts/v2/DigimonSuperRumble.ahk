@@ -333,6 +333,29 @@ Beber(start?) {
 }
 
 /**
+ * Si existe la `ventana` del Digimon Super Rumble le envía la tecla `Space` cada `100ms`.
+ * En caso contrario detiene todos los timers y cambia la variable `timer` a `false`.
+ * @param start Si se especifica un parámetro `start` se cambia la variable `timer` a `true`, y se lanza el timer `Space`.
+ */
+Space(start?) {
+    if IsSet(start) {
+        global timer
+        if !timer {
+            timer := true
+            SetTimer(Space, sdKeyDelay.Value)
+        } else {
+            StopTimers()
+        }
+    } else {
+        if WinExist(ventana) {
+            ControlSend('{Space}', , ventana)
+        } else {
+            StopTimers()
+        }
+    }
+}
+
+/**
  * Envía la tecla `º` del teclado español como si fuese `´` del teclado coreano.
  */
 Autorun(*) {
@@ -355,5 +378,7 @@ F6:: FFF(true)
 F7:: Comer(true)
 F8:: Beber(true)
 F9:: Mostrar()
+F10:: Space(true)
 ~LButton:: UpdateStatusBar()
+~XButton1:: FG(true)
 ~XButton2:: Autorun()
