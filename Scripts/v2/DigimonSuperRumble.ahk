@@ -390,17 +390,17 @@ Autorun(*) {
  */
 Mouse4(start?) {
     if IsSet(start) {
-        if WinActive(ventana) {
-            if chkM4.Value {
-                global timerM4
-                if !timerM4 {
-                    timerM4 := true
-                    SetTimer(Mouse4, sdKeyDelay.Value)
-                } else {
-                    SetTimer(Mouse4, 0)
-                    timerM4 := false
-                }
+        if chkM4.Value {
+            global timerM4
+            if !timerM4 {
+                timerM4 := true
+                SetTimer(Mouse4, sdKeyDelay.Value)
             } else {
+                SetTimer(Mouse4, 0)
+                timerM4 := false
+            }
+        } else {
+            if WinActive(ventana) {
                 ControlSend(cbM4.Text, , ventana)
             }
         }
