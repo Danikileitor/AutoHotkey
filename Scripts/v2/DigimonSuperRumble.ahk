@@ -69,6 +69,7 @@ eM4 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM4', 'M4')
 tM4 := interfaz.AddText('ys+5 vtM4', 'Función personalizada:')
 cbM4 := interfaz.AddComboBox('ys w30 Limit1 vcbM4', ['F', 'G', 'I', 'T'])
 chkM4 := interfaz.AddCheckbox('ys w23 vcM4', ' Loop')
+chkM4.OnEvent('Click', OnClick)
 eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM5', 'M5')
 tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
 
@@ -109,6 +110,12 @@ OnClick(chk, *) {
             case 'cFFF': FFF(true)
             case 'cComer': Comer(true)
             case 'cBeber': Beber(true)
+        }
+    } else {
+        switch chk.Name {
+            case 'cM4':
+                SetTimer(Mouse4, 0)
+                timerM4 := false
         }
     }
 }
