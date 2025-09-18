@@ -177,18 +177,6 @@ UpDownChange(u, *) {
 }
 
 /**
- * Actualiza la barra de estado con el nombre de la ventana activa.
- */
-UpdateStatusBar(*) {
-    Sleep(50)
-    if WinActive('A') {
-        sb.SetText(WinGetTitle('A'))
-    } else {
-        sb.SetText('')
-    }
-}
-
-/**
  * Actualiza el reloj de la barra de estado.
  */
 UpdateClock(*) {
@@ -425,6 +413,5 @@ F7:: Comer(true)
 F8:: Beber(true)
 F9:: Mostrar()
 F10:: Space(true)
-~LButton:: UpdateStatusBar()
 ~XButton1:: Mouse4(true)
 ~XButton2:: Autorun()
