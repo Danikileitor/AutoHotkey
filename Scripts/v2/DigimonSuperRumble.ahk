@@ -12,6 +12,8 @@ timer := false
 comiendo := false
 /** Boolean que indica si el timer `Beber` está activo.*/
 bebiendo := false
+/** Boolean que indica si el timer para `Mouse4` está activo.*/
+timerM4 := false
 
 ;################
 ;### Interfaz ###
@@ -20,7 +22,7 @@ bebiendo := false
 interfaz := Gui('-MaximizeBox -MinimizeBox', '[DNK]{AHK}{DSR}')
 lTitle := interfaz.AddText('Center w300 vTitle', 'Digimon Super Rumble')
 sb := interfaz.AddStatusBar('vSB', 'Digimon Super Rumble')
-sb.SetParts(220)
+sb.SetParts(250)
 tTabs := interfaz.AddTab3('w280', ['KeyBinds', 'Opciones', 'Ayuda'])
 
 tTabs.UseTab('Opciones')
@@ -42,25 +44,31 @@ tTabs.UseTab('KeyBinds')
 hkF4 := interfaz.AddHotkey('Disabled w22 Section vF4', 'F4')
 tF4 := interfaz.AddText('ys+5 vtF4', 'Cerrar el programa')
 hkFG := interfaz.AddHotkey('Disabled xs w22 Section vFG', 'F5')
-chkFG := interfaz.AddCheckbox('ys+5 vcFG', ' Farmeo: FGGG cada ' . sdKeyDelay.Value . 'ms')
+chkFG := interfaz.AddCheckbox('ys+5 vcFG', ' Farmeo: FGGG cada ' . sdKeyDelay.range.max . 'ms')
 chkFG.OnEvent('Click', OnClick)
 hkFFF := interfaz.AddHotkey('Disabled xs w22 Section vFFF', 'F6')
-chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada ' . sdKeyDelay.Value . 'ms')
+chkFFF := interfaz.AddCheckbox('ys+5 vcFFF', ' Skip: F cada ' . sdKeyDelay.range.max . ' ms')
 chkFFF.OnEvent('Click', OnClick)
 hkComer := interfaz.AddHotkey('Disabled xs w22 Section vComer', 'F7')
 chkComer := interfaz.AddCheckbox('ys w23 vcComer', ' Comer:')
-cbComer := interfaz.AddComboBox('ys w30 Limit vcbComer', ['1', '3'])
+cbComer := interfaz.AddComboBox('ys w30 Limit1 vcbComer', ['1', '3'])
 cbComer.Choose(1)
-tComer := interfaz.AddText('ys+5 vtComer', 'cada ' . sdKeyDelay.Value . 'ms')
+tComer := interfaz.AddText('ys+5 vtComer', 'cada ' . sdKeyDelay.range.max . ' ms')
 chkComer.OnEvent('Click', OnClick)
 hkBeber := interfaz.AddHotkey('Disabled xs w22 Section vBeber', 'F8')
 chkBeber := interfaz.AddCheckbox('ys w23 vcBeber', ' Beber:')
-cbBeber := interfaz.AddComboBox('ys w30 Limit vcbBeber', ['2', '4'])
+cbBeber := interfaz.AddComboBox('ys w30 Limit1 vcbBeber', ['2', '4'])
 cbBeber.Choose(1)
-tBeber := interfaz.AddText('ys+5 vtBeber', 'cada ' . sdKeyDelay.Value . 'ms')
+tBeber := interfaz.AddText('ys+5 vtBeber', 'cada ' . sdKeyDelay.range.max . ' ms')
 chkBeber.OnEvent('Click', OnClick)
 hkF9 := interfaz.AddHotkey('Disabled xs w22 Section vF9', 'F9')
 tF9 := interfaz.AddText('ys+5 vtF9', 'Abrir/Cerrar esta ventana')
+hkF10 := interfaz.AddHotkey('Disabled xs w22 Section vF10', 'F10')
+tF10 := interfaz.AddText('ys+5 vtF10', 'Espacio cada ' . sdKeyDelay.range.max . ' ms')
+eM4 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM4', 'M4')
+tM4 := interfaz.AddText('ys+5 vtM4', 'Función personalizada:')
+cbM4 := interfaz.AddComboBox('ys w30 Limit1 vcbM4', ['F', 'G', 'I', 'T'])
+chkM4 := interfaz.AddCheckbox('ys w23 vcM4', ' Loop')
 eM5 := interfaz.AddEdit('Disabled ReadOnly -Wrap r1 xs w22 Section vM5', 'M5')
 tM5 := interfaz.AddText('ys+5 vtM5', 'Autorun / Cambiar cámara de combate')
 
@@ -77,7 +85,7 @@ tTabs.UseTab()
 btnSalir := interfaz.AddButton('Default Center x240 w50 vSalir', 'Salir')
 btnSalir.OnEvent('Click', Salir)
 
-SetKeyDelay(sdKeyDelay.Value)
+UpdateKeyDelay()
 
 ;#################
 ;### Funciones ###
@@ -124,10 +132,11 @@ ControlChangeKeyDelay(c, *) {
  */
 UpdateKeyDelay(*) {
     SetKeyDelay(sdKeyDelay.Value)
-    chkFG.Text := ' Farmeo: FGGG cada ' . sdKeyDelay.Value . 'ms'
-    chkFFF.Text := ' Skip: F cada ' . sdKeyDelay.Value . 'ms'
-    tComer.Text := 'cada ' . sdKeyDelay.Value . 'ms'
-    tBeber.Text := 'cada ' . sdKeyDelay.Value . 'ms'
+    chkFG.Text := ' Farmeo: FGGG cada ' . sdKeyDelay.Value . ' ms'
+    chkFFF.Text := ' Skip: F cada ' . sdKeyDelay.Value . ' ms'
+    tComer.Text := 'cada ' . sdKeyDelay.Value . ' ms'
+    tBeber.Text := 'cada ' . sdKeyDelay.Value . ' ms'
+    tF10.Text := 'Espacio cada ' . sdKeyDelay.Value . ' ms'
 }
 
 /**
@@ -176,7 +185,7 @@ UpdateStatusBar(*) {
  * Actualiza el reloj de la barra de estado.
  */
 UpdateClock(*) {
-    time := FormatTime(A_Now, 'hh:mm:ss tt')
+    time := FormatTime(A_Now, 'HH:mm:ss')
     sb.SetText(time, 2)
 }
 
@@ -369,6 +378,35 @@ Autorun(*) {
     }
 }
 
+/**
+ * Función que envía las teclas configuradas para el `Mouse4`.
+ */
+Mouse4(start?) {
+    if IsSet(start) {
+        if WinActive(ventana) {
+            if chkM4.Value {
+                global timerM4
+                if !timerM4 {
+                    timerM4 := true
+                    SetTimer(Mouse4, sdKeyDelay.Value)
+                } else {
+                    SetTimer(Mouse4, 0)
+                    timerM4 := false
+                }
+            } else {
+                ControlSend(cbM4.Text, , ventana)
+            }
+        }
+    } else {
+        if WinExist(ventana) {
+            ControlSend(cbM4.Text, , ventana)
+        } else {
+            SetTimer(Mouse4, 0)
+            timerM4 := false
+        }
+    }
+}
+
 ;###############
 ;### Hotkeys ###
 ;###############
@@ -381,5 +419,5 @@ F8:: Beber(true)
 F9:: Mostrar()
 F10:: Space(true)
 ~LButton:: UpdateStatusBar()
-~XButton1:: FG(true)
+~XButton1:: Mouse4(true)
 ~XButton2:: Autorun()
