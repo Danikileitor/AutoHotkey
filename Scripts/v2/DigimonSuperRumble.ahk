@@ -402,6 +402,11 @@ Mouse4(start?) {
     }
 }
 
+GetColor(*) {
+    MouseGetPos(&MouseX, &MouseY, &MouseWin, &MouseControl)
+    MsgBox('El color en la posición del ratón (' . MouseX . ',' . MouseY . ') es: ' . PixelGetColor(MouseX, MouseY) . ' en la ventana ' . MouseWin . ' | ' . MouseControl)
+}
+
 ;###############
 ;### Hotkeys ###
 ;###############
@@ -413,5 +418,6 @@ F7:: Comer(true)
 F8:: Beber(true)
 F9:: Mostrar()
 F10:: Space(true)
+;~MButton UP:: GetColor()
 ~XButton1:: Mouse4(true)
 ~XButton2:: Autorun()
